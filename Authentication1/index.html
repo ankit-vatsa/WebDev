@@ -51,7 +51,7 @@
             // For simplicity, you can compare them against predefined values
             var yourAccessKey=AKIA2M23WTUP245PJVPJ;
             var yourSecurityKey=acuei8q8F3eVEt/7XrzYEStb/DhCx0ptdCj8jfl6;
-
+            
             if (accessKey === "yourAccessKey" && securityKey === "yourSecurityKey") {
                 document.getElementById("authForm").style.display = "none";
                 document.getElementById("dataFormContainer").style.display = "block";
@@ -75,7 +75,6 @@
 
             var headers = {
                 'Content-Type': 'application/json',
-                'Content-Length': JSON.stringify(data).length.toString(),
                 'Authorization': 'Bearer ' + accessKey + ':' + securityKey
             };
 
