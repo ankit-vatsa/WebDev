@@ -23,8 +23,8 @@
         <h1>Submit Data</h1>
 
         <form id="dataForm">
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id" required><br>
+            <label for="ABHA_ID">ID:</label>
+            <input type="text" id="ABHA_ID" name="ABHA_ID" required><br>
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
@@ -62,14 +62,14 @@
             var data = {
                 "httpMethod": "POST",
                 "body": {
-                    "id": document.getElementById("id").value,
+                    "ABHA_ID": document.getElementById("ABHA_ID").value,
                     "name": document.getElementById("name").value,
                     "condition": document.getElementById("condition").value,
                     "remarks": document.getElementById("remarks").value
                 }
             };
 
-            var apiUrl = 'https://c2i0jgcq3e.execute-api.ap-south-1.amazonaws.com/default'; // Replace with your AWS API endpoint URL
+            var apiUrl = 'https://ziuaijp797.execute-api.ap-south-1.amazonaws.com/Crisis'; // Replace with your AWS API endpoint URL
 
             var headers = {
                 'Content-Type': 'application/json',
