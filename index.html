@@ -1,120 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Contact Form</title>
-  <style>
-    .form-container {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: bold;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 8px;
-    }
-
-    .form-group button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .form-group button:hover {
-      background-color: #45a049;
-    }
-
-    .form-message {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px solid #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data to AWS API</title>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Contact Form</h2>
-    <div class="form-message" id="form-message"></div>
-    <form id="contact-form">
-      <div class="form-group">
+
+    <h1>Submit Data</h1>
+
+    <form id="dataForm">
+        <label for="ABHA_ID">ABHA ID:</label>
+        <input type="text" id="ABHA_ID" name="ABHA_ID" required><br>
+
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-      </div>
-      <div class="form-group">
-        <button type="submit">Submit</button>
-      </div>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="condition">Condition:</label>
+        <input type="text" id="condition" name="condition" required><br>
+
+        <label for="remarks">Remarks:</label>
+        <input type="text" id="remarks" name="remarks" required><br>
+
+        <button type="button" onclick="submitData()">Submit</button>
     </form>
-  </div>
 
-  <script>
-  // Update this variable with your API Gateway URL
-  var apiGatewayUrl = 'https://i0tfgej8b7.execute-api.ap-south-1.amazonaws.com/Prod/cf_post_service';
+    <script>
+        function submitData() {
+            var data = {
+                "httpMethod": "POST",
+                "body": {
+                    "ABHA_ID": document.getElementById("ABHA_ID").value,
+                    "name": document.getElementById("name").value,
+                    "condition": document.getElementById("condition").value,
+                    "remarks": document.getElementById("remarks").value
+                }
+            };
 
-  document.getElementById('contact-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+            var apiUrl = 'https://ziuaijp797.execute-api.ap-south-1.amazonaws.com/Prod/'; // Replace with your AWS API endpoint URL
+            var accessKey = 'AKIA2M23WTUP245PJVPJ';
+            var secretKey = 'acuei8q8F3eVEt/7XrzYEStb/DhCx0ptdCj8jfl6';
 
-    // Generate a random ID
-    var id = generateRandomId();
+            // Make sure to include necessary headers for AWS Signature Version 4
+            var headers = {
+                'Content-Type': 'application/json',
+                'X-Amz-Target': 'Your-API-Gateway-Resource',
+            };
 
-    var form = event.target;
-    var formData = new FormData(form);
+            // Use AWS Signature Version 4 library or implement the signing process yourself
 
-    // Create the contact object with the generated ID
-    var contact = {
-      id: id,
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message')
-    };
-	console.log(contact)
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', apiGatewayUrl, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        var messageElement = document.getElementById('form-message');
-        if (xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-		  console.log(response )
-          messageElement.textContent = response.message;
-          form.reset();
-        } else {
-          messageElement.textContent = 'Submitted!!';
+            // Send the request to the AWS API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error
+            });
         }
-      }
-    };
-
-    var contactJson = JSON.stringify(contact);
-    xhr.send(contactJson);
-	console.log(contactJson)
-  });
-
-  // Function to generate a random ID
-  function generateRandomId() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  }
-  </script>
+    </script>
 
 </body>
+</html>
