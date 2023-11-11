@@ -86,12 +86,20 @@
             .then(data => {
                 console.log('Success:', data);
                 // Handle success response
+                clearForm();
             })
             .catch(error => {
                 console.error('Error:', error);
                 // Handle error
             });
         }
+    function clearForm() {
+        document.getElementById("ABHA_ID").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("condition").value = "";
+        document.getElementById("remarks").value = "";
+    }
+
 
     </script>
 
