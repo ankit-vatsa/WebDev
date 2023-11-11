@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data to AWS REST API</title>
+</head>
+<body>
+
+    <h1>API Authorization</h1>
+
+    <form id="authForm">
+        <label for="accessKey">Access Key:</label>
+        <input type="text" id="accessKey" name="accessKey" required><br>
+
+        <label for="securityKey">Security Key:</label>
+        <input type="password" id="securityKey" name="securityKey" required><br>
+
+        <button type="button" onclick="authorize()">Authorize</button>
+    </form>
+
+    <div id="dataFormContainer" style="display:none;">
+        <h1>Submit Data</h1>
+
+        <form id="dataForm">
+            <label for="ABHA_ID">ABHA ID:</label>
+            <input type="text" id="ABHA_ID" name="ABHA_ID" required><br>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="condition">Condition:</label>
+            <input type="text" id="condition" name="condition" required><br>
+
+            <label for="remarks">Remarks:</label>
+            <input type="text" id="remarks" name="remarks" required><br>
+
+            <button type="button" onclick="submitData()">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        var accessKey;
+        var securityKey;
+
+        function authorize() {
+            accessKey = document.getElementById("accessKey").value;
+            securityKey = document.getElementById("securityKey").value;
+
+            // You can add logic here to validate the accessKey and securityKey
+            // For simplicity, you can compare them against predefined values
+
+            if (accessKey === "yourAccessKey" && securityKey === "yourSecurityKey") {
+                document.getElementById("authForm").style.display = "none";
+                document.getElementById("dataFormContainer").style.display = "block";
+            } else {
+                alert("Invalid access key or security key. Please try again.");
+            }
+        }
+
+        function submitData() {
+            var data = {
+                "httpMethod": "POST",
+                "body": {
+                    "ABHA_ID": document.getElementById("ABHA_ID").value,
+                    "name": document.getElementById("name").value,
+                    "condition": document.getElementById("condition").value,
+                    "remarks": document.getElementById("remarks").value
+                }
+            };
+
+            var apiUrl = 'https://c2i0jgcq3e.execute-api.ap-south-1.amazonaws.com/default/Health_PUT_to_DT'; // Replace with your AWS API endpoint URL
+
+            var headers = {
+                'Content-Type': 'application/json',
+                'Content-Length': JSON.stringify(data).length.toString(),
+                'Authorization': 'Bearer ' + accessKey + ':' + securityKey
+            };
+
+            // Send the request to the AWS API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        }
+    </script>
+
+</body>
+</html>
