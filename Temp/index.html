@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data to AWS REST API</title>
+</head>
+<body>
+
+    <h1>Submit Data</h1>
+
+    <form id="dataForm">
+        <label for="ABHA_ID">ABHA ID:</label>
+        <input type="text" id="ABHA_ID" name="ABHA_ID" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="condition">Condition:</label>
+        <input type="text" id="condition" name="condition" required><br>
+
+        <label for="remarks">Remarks:</label>
+        <input type="text" id="remarks" name="remarks" required><br>
+
+        <button type="button" onclick="submitData()">Submit</button>
+    </form>
+
+    <script>
+        function submitData() {
+            var data = {
+                "httpMethod": "POST",
+                "body": {
+                    "ABHA_ID": document.getElementById("ABHA_ID").value,
+                    "name": document.getElementById("name").value,
+                    "condition": document.getElementById("condition").value,
+                    "remarks": document.getElementById("remarks").value
+                }
+            };
+
+            var apiUrl = 'https://ziuaijp797.execute-api.ap-south-1.amazonaws.com/Crisis'; // Replace with your AWS API endpoint URL
+
+            var headers = {
+                'Content-Type': 'application/json',
+                'Content-Length': JSON.stringify(data).length.toString()
+            };
+
+            // Send the request to the AWS API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        }
+    </script>
+
+</body>
+</html>
