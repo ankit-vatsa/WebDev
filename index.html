@@ -26,46 +26,51 @@
     </form>
 
     <script>
-        function submitData() {
-            var data = {
-                "httpMethod": "POST",
-                "body": {
-                    "ABHA_ID": document.getElementById("ABHA_ID").value,
-                    "name": document.getElementById("name").value,
-                    "condition": document.getElementById("condition").value,
-                    "remarks": document.getElementById("remarks").value
-                }
-            };
+    async function submitData() {
+        var data = {
+            "httpMethod": "POST",
+            "body": {
+                "ABHA_ID": document.getElementById("ABHA_ID").value,
+                "name": document.getElementById("name").value,
+                "condition": document.getElementById("condition").value,
+                "remarks": document.getElementById("remarks").value
+            }
+        };
 
-            var apiUrl = 'https://ziuaijp797.execute-api.ap-south-1.amazonaws.com/Prod/'; // Replace with your AWS API endpoint URL
-            var accessKey = 'AKIA2M23WTUP245PJVPJ';
-            var secretKey = 'acuei8q8F3eVEt/7XrzYEStb/DhCx0ptdCj8jfl6';
+        var apiUrl = 'https://ziuaijp797.execute-api.ap-south-1.amazonaws.com/Prod/'; // Replace with your AWS API endpoint URL
+        var accessKey = 'AKIA2M23WTUP245PJVPJ';
+        var secretKey = 'acuei8q8F3eVEt/7XrzYEStb/DhCx0ptdCj8jfl6';
 
-            // Make sure to include necessary headers for AWS Signature Version 4
-            var headers = {
-                'Content-Type': 'application/json',
-                'X-Amz-Target': 'Your-API-Gateway-Resource',
-            };
+        var headers = {
+            'Content-Type': 'application/json',
+            'X-Amz-Target': 'Your-API-Gateway-Resource',
+        };
 
-            // Use AWS Signature Version 4 library or implement the signing process yourself
+        // AWS Signature Version 4
+        var awsDate = new Date().toISOString().replace(/[:\-]|\.\d{3}/g, '');
+        var canonicalRequest = /* ... construct your canonical request */;
+        var stringToSign = /* ... construct your string to sign */;
+        var signature = /* ... calculate the signature */;
 
-            // Send the request to the AWS API
-            fetch(apiUrl, {
+        headers['Authorization'] = `AWS4-HMAC-SHA256 Credential=${accessKey}/${awsDate.substring(0, 8)}/us-east-1/execute-api/aws4_request, SignedHeaders=content-type;x-amz-target, Signature=${signature}`;
+        headers['X-Amz-Date'] = awsDate;
+
+        try {
+            var response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Handle success response
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle error
             });
+
+            var responseData = await response.json();
+            console.log('Success:', responseData);
+            // Handle success response
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error
         }
-    </script>
+    }
+</script>
 
 </body>
 </html>
