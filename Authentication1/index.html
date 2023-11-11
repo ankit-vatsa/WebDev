@@ -23,8 +23,8 @@
         <h1>Submit Data</h1>
 
         <form id="dataForm">
-            <label for="ABHA_ID">ABHA ID:</label>
-            <input type="text" id="ABHA_ID" name="ABHA_ID" required><br>
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id" required><br>
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
@@ -62,7 +62,7 @@
             var data = {
                 "httpMethod": "POST",
                 "body": {
-                    "ABHA_ID": document.getElementById("ABHA_ID").value,
+                    "id": document.getElementById("id").value,
                     "name": document.getElementById("name").value,
                     "condition": document.getElementById("condition").value,
                     "remarks": document.getElementById("remarks").value
