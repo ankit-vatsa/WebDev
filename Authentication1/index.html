@@ -73,7 +73,8 @@
 
             var headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + accessKey + ':' + securityKey
+                //'Authorization': 'Bearer ' + accessKey + ':' + securityKey
+                 'Content-Length': JSON.stringify(data).length.toString()
             };
 
             // Send the request to the AWS API
