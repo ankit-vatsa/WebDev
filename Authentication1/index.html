@@ -58,7 +58,7 @@
             }
         }
 
-        function submitData() {
+                function submitData() {
             var data = {
                 "httpMethod": "POST",
                 "body": {
@@ -73,8 +73,7 @@
 
             var headers = {
                 'Content-Type': 'application/json',
-                //'Authorization': 'Bearer ' + accessKey + ':' + securityKey
-                 'Content-Length': JSON.stringify(data).length.toString()
+                'Content-Length': JSON.stringify(data).length.toString()
             };
 
             // Send the request to the AWS API
@@ -93,6 +92,7 @@
                 // Handle error
             });
         }
+
     </script>
 
 </body>
