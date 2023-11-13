@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data to AWS REST API</title>
 </head>
 <body>
 
-  <form id="weatherForm">
-    Zip Code: <input type="text" name="zipCode" required><br>
-    Country Code: <input type="text" name="countryCode" required><br>
-    <input type="submit" value="Get Weather">
-  </form>
+    <h1>Submit Data</h1>
 
-  <script>
-    document.getElementById("weatherForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const formData = {
-        zipCode: document.querySelector('input[name="zipCode"]').value,
-        countryCode: document.querySelector('input[name="countryCode"]').value
-      };
+    <form id="dataForm">
+        <label for="zipCode">Zip Code:</label>
+        <input type="text" id="zipCode" name="zipCode" required><br>
 
-      // Make API request to the API Gateway endpoint with the provided data
-      fetch('https://546v5vzmbh.execute-api.ap-south-1.amazonaws.com/Weather', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Handle the response data as needed
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
-  </script>
+        <label for="countryCode">CountryCode</label>
+        <input type="text" id="countryCode" name="countryCode" required><br>
+
+        <button type="button" onclick="submitData()">Submit</button>
+    </form>
+
+    <script>
+        function submitData() {
+            var data = {
+                "httpMethod": "POST",
+                "body": {
+                    "zipCode": document.getElementById("zipCode").value,
+                    "countryCode": document.getElementById("countryCode").value
+                }
+            };
+
+            var apiUrl = 'https://546v5vzmbh.execute-api.ap-south-1.amazonaws.com/Weather'; // Replace with your AWS API endpoint URL
+
+            var headers = {
+                'Content-Type': 'application/json',
+                'Content-Length': JSON.stringify(data).length.toString()
+            };
+
+            // Send the request to the AWS API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        }
+    </script>
 
 </body>
 </html>
