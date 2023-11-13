@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Form</title>
+</head>
+<body>
 
+  <form id="weatherForm">
+    Zip Code: <input type="text" name="zipCode" required><br>
+    Country Code: <input type="text" name="countryCode" required><br>
+    <input type="submit" value="Get Weather">
+  </form>
+
+  <script>
+    document.getElementById("weatherForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = {
+        zipCode: document.querySelector('input[name="zipCode"]').value,
+        countryCode: document.querySelector('input[name="countryCode"]').value
+      };
+
+      // Make API request to the API Gateway endpoint with the provided data
+      fetch('YOUR_API_GATEWAY_ENDPOINT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // Handle the response data as needed
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+
+</body>
+</html>
