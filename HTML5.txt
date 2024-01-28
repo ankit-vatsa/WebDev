@@ -1,0 +1,5 @@
+HSemantic HTML tags are tags that define the meaning of the content they contain.
+
+In summary, while you can use the <img> tag alone to display an image, the <figure> tag adds semantic value, improves accessibility, and makes it easier to style images with associated captions.
+
+In summary, <article> is more focused on representing a standalone, independent piece of content, while <section> is used for grouping related content together within a document. 
